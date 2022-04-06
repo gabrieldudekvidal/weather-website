@@ -1,0 +1,47 @@
+body {
+  background-color: #fafafa;
+  font-family: "Quicksand";
+}
+
+input, .button-search {
+    font-family: "Quicksand";
+}
+
+input {
+  padding: 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  outline-color: #ffd21f;
+  vertical-align: middle;
+}
+
+.image-sun{
+  margin: 50px auto;
+  display: block;
+  width: 280px;  
+}
+
+.container {
+  margin: 100px auto;
+  display: block;
+  width: 22%;
+}
+
+.button-search {
+  background-color: #ffd21f;
+  border: none;
+  border-radius: 5px;
+  padding: 22px;
+  color: #ffffff;
+}
+
+.button-search:hover {
+  background-color: #ffd21f;
+  border: none;
+  border-radius: 5px;
+  padding: 22px;
+  color: #ffffff;
+  cursor: pointer;
+   box-shadow: 2px 5px 10px #ffe373;
+}
