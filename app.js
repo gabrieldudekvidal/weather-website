@@ -1,36 +1,33 @@
-const express = require("express");
-const https = require("https");
-const bodyParser = require("body-parser");
+import express from "express";
+import axios from "axios";
 
 const app = express();
+const port = 3000;
 
-app.set("view-engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public")); 
+app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({extended: true}));
-
-app.use(express.static("public"));
-
-app.get("/", function(req, res){
-    
-    const url = "https://api.openweathermap.org/data/2.5/weather?q=" + req.body.cityName +"&appid=b840b1ff2ff6bdc4683e56db3434f841&units=metric";
-    
-    https.get(url, function (response){
-        console.log(response.statusCode);
-
-    response.on("data", function(data){
-    const parseWeatherData = JSON.parse(data);
-    const temp = parseWeatherData.main.temp;
-    const weatherDescription = parseWeatherData.weather[0].description;
-    const city = parseWeatherData.name;
-    const icon = parseWeatherData.weather[0].icon;
-    //const imageUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
-
-    res.render("list", {resultCity:city});
-    res.render("list", {resultTemperature:Math.floor(temp)});
-    res.render("list", {resultWeatherDesc:weatherDescription});
-     });     
+app.get("/", async (req, res) => {
+    try {
+        res.render("weather", {citySearch: ""});
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("An error occurred.");
+    }
 });
 
-app.listen(3000, function(){
-    console.log("The server is running on port 3000.");
+app.post("/weather", async (req, res) => {
+    try {
+        const city = req.body.city;
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b840b1ff2ff6bdc4683e56db3434f841&units=metric`);
+        const result = response.data;
+        res.render("weather.ejs", { data: result, citySearch: city})
+    } catch (err) {
+        
+    }
+})
+
+app.listen(port, () => {
+    console.log(`Server running on port: ${port}`);
 });
